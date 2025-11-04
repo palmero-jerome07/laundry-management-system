@@ -1,0 +1,75 @@
+import Customer from "../models/customerModel.js";
+
+const customerController = {
+  getAll: async (req, res) => {
+    try {
+      const customers = await Customer.getAll();
+      res.status(200).json({
+        success: true,
+        customers: customers,
+      });
+    } catch (err) {
+      res.status(500).json({
+        success: false,
+        message: "Error fetching customers",
+        error: err.message,
+      });
+    }
+  },
+  getById: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const customer = await Customer.getById(id);
+      if (!customer || customer.length === 0) {
+        return res.status(404).json({
+          success: false,
+          message: "Customer not found",
+        });
+      }
+      res.status(200).json({
+        success: true,
+        data: customer,
+      });
+    } catch (err) {
+      res.status(500).json({
+        success: false,
+        message: "Error fetching customer",
+        error: err.message,
+      });
+    }
+  },
+  create: async (req, res) => {
+    try {
+      const { full_name, contact, email, address } = req.body;
+
+      if (!full_name || !contact || !email || !address) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "All fields (full_name, contact, email, address) are required",
+        });
+      }
+
+      const newCustomer = await Customer.create({
+        full_name,
+        contact,
+        email,
+        address,
+      });
+
+      res.status(201).json({
+        success: true,
+        message: "Customer added successfully",
+        customer_id: newCustomer.id,
+      });
+    } catch (err) {
+      res.status(500).json({
+        success: false,
+        message: "Error creating customer",
+        error: err.message,
+      });
+    }
+  },
+};
+
+export default customerController;
