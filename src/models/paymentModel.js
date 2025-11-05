@@ -30,13 +30,16 @@ const Payment = {
   },
 
   create: (paymentData) => {
-    const { order_id, amount_paid, payment_date, payment_method } = paymentData;
+    const { order_id, amount_paid, payment_mode } = paymentData;
     return new Promise((resolve, reject) => {
       db.query(
-        "INSERT INTO tbl_payments (order_id, amount_paid, payment_date, payment_method) VALUES (?, ?, ?, ?)",
-        [order_id, amount_paid, payment_date, payment_method],
+        "INSERT INTO tbl_payments (order_id, amount_paid, payment_mode) VALUES (?, ?, ?)",
+        [order_id, amount_paid, payment_mode],
         (err, results) => {
-          if (err) reject(err);
+          if (err) return reject(err);
+          if (!results) {
+            return reject(new Error("No result returned from database"));
+          }
           resolve({ id: results.insertId, ...paymentData });
         }
       );

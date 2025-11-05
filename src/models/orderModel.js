@@ -30,12 +30,11 @@ const Order = {
   },
 
   create: (orderData) => {
-    const { customer_id, service_id, weight_kg, status, total_amount } =
-      orderData;
+    const { customer_id, service_id } = orderData;
     return new Promise((resolve, reject) => {
       db.query(
-        "INSERT INTO tbl_orders (customer_id, service_id, weight_kg, status, total_amount) VALUES (?, ?, ?, ?, ?)",
-        [customer_id, service_id, weight_kg, status, total_amount],
+        "INSERT INTO tbl_orders (customer_id, service_id) VALUES (?, ?)",
+        [customer_id, service_id],
         (err, results) => {
           if (err) reject(err);
 
@@ -44,6 +43,24 @@ const Order = {
           }
 
           resolve({ id: results.insertId, ...orderData });
+        }
+      );
+    });
+  },
+
+  updateStatus: (order_id, newStatus) => {
+    return new Promise((resolve, reject) => {
+      db.query(
+        "UPDATE tbl_orders SET status = ? WHERE order_id = ?",
+        [newStatus, order_id],
+        (err, results) => {
+          if (err) return reject(err);
+
+          if (results.affectedRows === 0) {
+            return resolve(null);
+          }
+
+          resolve({ success: true, order_id, ...newStatus });
         }
       );
     });
