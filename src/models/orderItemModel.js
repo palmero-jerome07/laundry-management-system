@@ -3,12 +3,11 @@ import db from "../config/database.js";
 const OrderItem = {
   addItems: (order_id, items) => {
     return new Promise((resolve, reject) => {
-      // 1️⃣ Get service price per kilo
       db.query(
         `SELECT s.price_per_kilo 
-         FROM tbl_orders o 
-         JOIN tbl_services s ON o.service_id = s.service_id 
-         WHERE o.order_id = ?`,
+       FROM tbl_orders o 
+       JOIN tbl_services s ON o.service_id = s.service_id 
+       WHERE o.order_id = ?`,
         [order_id],
         (err, serviceResult) => {
           if (err) return reject(err);
@@ -19,22 +18,10 @@ const OrderItem = {
           let totalWeight = 0;
           let totalAmount = 0;
 
-          // 2️⃣ Insert each clothing item one by one
-          const insertNext = (index) => {
-            if (index >= items.length) {
-              // When done, update totals
-              db.query(
-                "UPDATE tbl_orders SET total_weight = ?, total_amount = ? WHERE order_id = ?",
-                [totalWeight, totalAmount, order_id],
-                (err) => {
-                  if (err) return reject(err);
-                  resolve({ totalWeight, totalAmount });
-                }
-              );
-              return;
-            }
-
-            const item = items[index];
+          // Use simple for loop
+          let completed = 0;
+          for (let i = 0; i < items.length; i++) {
+            const item = items[i];
             const subtotal = item.weight_in_kilo * pricePerKilo;
             totalWeight += item.weight_in_kilo;
             totalAmount += subtotal;
@@ -44,12 +31,20 @@ const OrderItem = {
               [order_id, item.clothe_type, item.weight_in_kilo, subtotal],
               (err) => {
                 if (err) return reject(err);
-                insertNext(index + 1);
+                completed++;
+                if (completed === items.length) {
+                  db.query(
+                    "UPDATE tbl_orders SET total_weight = ?, total_amount = ? WHERE order_id = ?",
+                    [totalWeight, totalAmount, order_id],
+                    (err) => {
+                      if (err) return reject(err);
+                      resolve({ totalWeight, totalAmount });
+                    }
+                  );
+                }
               }
             );
-          };
-
-          insertNext(0);
+          }
         }
       );
     });
