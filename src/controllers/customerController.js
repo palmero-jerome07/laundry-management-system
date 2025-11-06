@@ -70,6 +70,42 @@ const customerController = {
       });
     }
   },
+
+  update: async (req, res) => {
+    try {
+      const { full_name, contact, email, address } = req.body;
+      const id = req.params.id;
+
+      const existingCustomer = await Customer.getById(id);
+
+      if (!existingCustomer) {
+        return res.status(404).json({
+          success: false,
+          message: "Customer not found",
+        });
+      }
+
+      if (!full_name || !contact || !email || !address) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "All fields (full_name, contact, email, address) are required",
+        });
+      }
+
+      await Customer.update(id, { full_name, contact, email, address });
+      res.status(201).json({
+        success: true,
+        message: `Customer ${req.params.id} updated.`,
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: `Customer ${req.params.id} NOT updated`,
+        error: error.message,
+      });
+    }
+  },
 };
 
 export default customerController;

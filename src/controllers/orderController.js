@@ -109,7 +109,7 @@ const orderController = {
     } catch (error) {
       res.status(500).json({
         success: false,
-        message: `Error updating status of order ${req.params.id}`,
+        message: `Error updating the status of order ${req.params.id}`,
         error: error.message,
       });
     }

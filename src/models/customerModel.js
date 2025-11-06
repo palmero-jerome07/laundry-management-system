@@ -34,6 +34,19 @@ const Customer = {
       );
     });
   },
+  update: (id, customerData) => {
+    const { full_name, contact, email, address } = customerData;
+    return new Promise((resolve, reject) => {
+      db.query(
+        "UPDATE tbl_customers SET full_name = ?, contact = ?, email = ?, address = ? WHERE customer_id = ?",
+        [full_name, contact, email, address, id],
+        (err, results) => {
+          if (err) reject(err);
+          resolve(results);
+        }
+      );
+    });
+  },
 };
 
 export default Customer;
