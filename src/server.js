@@ -10,13 +10,13 @@ import orderRoutes from "./routes/orderRoutes.js";
 import orderItemRoutes from "./routes/orderItemRoutes.js";
 import paymentRoutes from "./routes/paymentRoutes.js";
 
-// Configs
+// Config
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT ?? 3000;
 
-// Middleware
+// Middlewares
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -27,6 +27,7 @@ app.use("/api/services", serviceRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/order-items", orderItemRoutes);
 app.use("/api/payments", paymentRoutes);
+
 // Connections
 dbConnect()
   .then(() => {
@@ -41,5 +42,4 @@ dbConnect()
   })
   .catch((err) => {
     console.error("Failed to connect to DB. Server not started:", err);
-    process.exit(1);
   });
