@@ -51,39 +51,39 @@ const orderController = {
     }
   },
   getByStatus: async (req, res) => {
-  try {
-    const { status } = req.params;
+    try {
+      const { status } = req.params;
 
-    if (!status) {
-      return res.status(400).json({
+      if (!status) {
+        return res.status(400).json({
+          success: false,
+          message: "Status parameter is required",
+        });
+      }
+
+      const orders = await Order.getByStatus(status);
+
+      if (!orders || orders.length === 0) {
+        return res.status(404).json({
+          success: false,
+          message: `No orders found with status: ${status}`,
+        });
+      }
+
+      res.status(200).json({
+        success: true,
+        status: status,
+        total: orders.length,
+        orders: orders,
+      });
+    } catch (error) {
+      res.status(500).json({
         success: false,
-        message: "Status parameter is required",
+        message: "Error fetching orders by status",
+        error: error.message,
       });
     }
-
-    const orders = await Order.getByStatus(status);
-
-    if (!orders || orders.length === 0) {
-      return res.status(404).json({
-        success: false,
-        message: `No orders found with status: ${status}`,
-      });
-    }
-
-    res.status(200).json({
-      success: true,
-      status: status,
-      total: orders.length,
-      orders: orders,
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Error fetching orders by status",
-      error: error.message,
-    });
-  }
-},
+  },
   create: async (req, res) => {
     try {
       const { customer_id, service_id } = req.body;
