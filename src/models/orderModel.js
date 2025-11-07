@@ -65,6 +65,23 @@ const Order = {
       );
     });
   },
+
+  getByStatus: (status) => {
+  return new Promise((resolve, reject) => {
+    db.query(
+      `SELECT o.*, c.full_name, s.service_name
+       FROM tbl_orders o
+       JOIN tbl_customers c ON o.customer_id = c.customer_id
+       JOIN tbl_services s ON o.service_id = s.service_id
+       WHERE o.status = ?`,
+      [status],
+      (err, results) => {
+        if (err) reject(err);
+        resolve(results);
+      }
+    );
+  });
+},
 };
 
 export default Order;
