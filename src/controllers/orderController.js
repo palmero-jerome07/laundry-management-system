@@ -82,7 +82,7 @@ const orderController = {
   updateStatus: async (req, res) => {
     try {
       const { status } = req.body;
-      const id = req.params.id;
+      const id = req.params.id; // id ng umorder
 
       const existingId = await Order.getById(id);
 
