@@ -17,8 +17,7 @@ const orderItemController = {
       res.status(201).json({
         success: true,
         message: "Items added successfully.",
-        total_Weight: `${result.total_Weight} Kg`,
-        total_Amount: `₱ ${result.total_Amount}`,
+        ...result,
       });
     } catch (error) {
       console.error("Error adding items:", error);
