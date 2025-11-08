@@ -84,6 +84,42 @@ const orderController = {
       });
     }
   },
+  
+  getByName: async (req, res) => {
+    try {
+      const { name } = req.params;
+
+      if (!name) {
+        return res.status(400).json({
+          success: false,
+          message: "Customer name is required",
+        });
+      }
+
+      const orders = await Order.getByName(name);
+
+      if (!orders || orders.length === 0) {
+        return res.status(404).json({
+          success: false,
+          message: `No orders found for customer name: ${name}`,
+        });
+      }
+
+      res.status(200).json({
+        success: true,
+        name: name,
+        total: orders.length,
+        orders: orders,
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: "Error fetching orders by name",
+        error: error.message,
+      });
+    }
+  },
+
   create: async (req, res) => {
     try {
       const { customer_id, service_id } = req.body;

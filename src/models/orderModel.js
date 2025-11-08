@@ -82,6 +82,23 @@ const Order = {
       );
     });
   },
+
+  getByName: (name) => {
+    return new Promise((resolve, reject) => {
+      db.query(
+        `SELECT o.*, c.full_name, s.service_name
+         FROM tbl_orders o
+         JOIN tbl_customers c ON o.customer_id = c.customer_id
+         JOIN tbl_services s ON o.service_id = s.service_id
+         WHERE LOWER(TRIM(c.full_name)) LIKE LOWER(CONCAT('%', ?, '%'))`,
+        [name],
+        (err, results) => {
+          if (err) reject(err);
+          resolve(results);
+        }
+      );
+    });
+  },
 };
 
 export default Order;
