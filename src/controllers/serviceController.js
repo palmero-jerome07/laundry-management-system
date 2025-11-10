@@ -25,6 +25,71 @@ const serviceController = {
       });
     }
   },
+  getById: async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!id) {
+      return res.status(400).json({
+        success: false,
+        message: "Service ID is required",
+      });
+    }
+
+    const service = await Service.getById(id);
+
+    if (!service) {
+      return res.status(404).json({
+        success: false,
+        message: `No service found with ID: ${id}`,
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      service: service,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Error fetching service by ID",
+      error: error.message,
+    });
+  }
+},
+  getByName: async (req, res) => {
+  try {
+    const { name } = req.params;
+
+    if (!name) {
+      return res.status(400).json({
+        success: false,
+        message: "Service name is required",
+      });
+    }
+
+    const services = await Service.getByName(name);
+
+    if (!services || services.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: `No services found matching: ${name}`,
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      total: services.length,
+      results: services,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Error searching service by name",
+      error: error.message,
+    });
+  }
+},
 };
 
 export default serviceController;

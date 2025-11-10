@@ -23,6 +23,20 @@ const Service = {
     });
   },
 
+  getByName: (service_name) => {
+  return new Promise((resolve, reject) => {
+    const query = `
+      SELECT * FROM tbl_services 
+      WHERE service_name LIKE ?`;
+    const searchTerm = `%${service_name}%`; // allows partial matching
+
+    db.query(query, [searchTerm], (err, results) => {
+      if (err) reject(err);
+      resolve(results);
+    });
+  });
+},
+
   create: (serviceData) => {
     const { service_name, price_per_kg, description } = serviceData;
     return new Promise((resolve, reject) => {
