@@ -1,6 +1,7 @@
 import express from "express";
-import customerController from "../controllers/customerController.js";
 const router = express.Router();
+
+import customerController from "../controllers/customerController.js";
 
 router.get("/", customerController.getAll);
 router.get("/:id", customerController.getById);

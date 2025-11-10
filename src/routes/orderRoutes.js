@@ -1,6 +1,7 @@
 import express from "express";
-import orderController from "../controllers/orderController.js";
 const router = express.Router();
+
+import orderController from "../controllers/orderController.js";
 
 router.get("/", orderController.getAll);
 router.get("/status/:status", orderController.getByStatus);
