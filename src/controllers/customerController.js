@@ -38,6 +38,38 @@ const customerController = {
       });
     }
   },
+  getByName: async (req, res) => {
+    try {
+      const customerName = req.params.name;
+
+      if (!customerName) {
+        return res.status(400).json({
+          success: false,
+          message: "Customer name is required",
+        });
+      }
+
+      const existingCustomer = await Customer.getByName(customerName);
+
+      if (!existingCustomer) {
+        return res.status(404).json({
+          success: false,
+          message: `No customer found with name: ${customerName}`,
+        });
+      }
+
+      res.status(200).json({
+        success: true,
+        message: existingCustomer,
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: "Error fetching customer",
+        error: error.message,
+      });
+    }
+  },
   create: async (req, res) => {
     try {
       const { full_name, contact, email, address } = req.body;

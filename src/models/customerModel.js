@@ -21,6 +21,18 @@ const Customer = {
       );
     });
   },
+  getByName: (customerName) => {
+    return new Promise((resolve, reject) => {
+      db.query(
+        "SELECT * FROM tbl_customers WHERE LOWER(TRIM(full_name)) LIKE LOWER(CONCAT('%', ?, '%'))",
+        [customerName],
+        (error, results) => {
+          if (error) reject(error);
+          resolve(results);
+        }
+      );
+    });
+  },
   create: (customerData) => {
     const { full_name, contact, email, address } = customerData;
     return new Promise((resolve, reject) => {
