@@ -28,13 +28,26 @@ const Payment = {
       );
     });
   },
-
-  create: (paymentData) => {
-    const { order_id, amount_paid, payment_mode } = paymentData;
+  
+  getTotalPaid: (orderId) => {
     return new Promise((resolve, reject) => {
       db.query(
-        "INSERT INTO tbl_payments (order_id, amount_paid, payment_mode) VALUES (?, ?, ?)",
-        [order_id, amount_paid, payment_mode],
+        `SELECT SUM(amount_paid) AS totalPaid FROM tbl_payments WHERE order_id = ?`,
+        [orderId],
+        (err, rows) => {
+          if (err) return reject(err);
+          resolve(rows[0].totalPaid || 0); //returns the sum
+        }
+      );
+    });
+  },
+
+  create: (paymentData) => {
+    const { order_id, amount_paid, payment_mode, payment_balance } = paymentData;
+    return new Promise((resolve, reject) => {
+      db.query(
+        "INSERT INTO tbl_payments (order_id, amount_paid, payment_mode, payment_balance) VALUES (?, ?, ?, ?)",
+        [order_id, amount_paid, payment_mode, payment_balance],
         (err, results) => {
           if (err) return reject(err);
           if (!results) {
