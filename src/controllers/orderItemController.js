@@ -28,6 +28,28 @@ const orderItemController = {
       });
     }
   },
+
+  updateItem: async (req, res) => {
+    const item_id = req.params.id;
+    const updatedData = req.body; 
+
+    try {
+      const result = await OrderItem.updateItem(item_id, updatedData);
+
+      res.json({
+        success: true,
+        message: "Order item updated successfully",
+        ...result,
+      });
+    } catch (error) {
+      console.error("Error updating item:", error);
+      res.status(500).json({
+        success: false,
+        message: "Failed to update order item.",
+        error: error.message,
+      });
+    }
+  },
 };
 
 export default orderItemController;
