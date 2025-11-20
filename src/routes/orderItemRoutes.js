@@ -51,6 +51,48 @@ import orderItemController from "../controllers/orderItemController.js";
  */
 router.post("/", orderItemController.addItems);
 
+/**
+ * @openapi
+ * /api/order-items/{id}:
+ *   put:
+ *     summary: Update an existing order item
+ *     tags:
+ *       - OrderItems
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: The ID of the order item to update
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               clothe_type:
+ *                 type: string
+ *               weight_in_kilo:
+ *                 type: number
+ *     responses:
+ *       200:
+ *         description: Order item updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 totalWeight:
+ *                   type: number
+ *                 totalAmount:
+ *                   type: number
+ */
+router.put("/:id", orderItemController.updateItem);
+
 export default router;
 
 /**
