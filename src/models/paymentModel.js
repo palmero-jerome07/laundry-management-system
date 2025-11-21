@@ -43,17 +43,33 @@ const Payment = {
   },
 
   create: (paymentData) => {
-    const { order_id, amount_paid, payment_mode, payment_balance } = paymentData;
+    const { order_id, amount_paid, payment_mode, payment_balance, payment_status } = paymentData;
     return new Promise((resolve, reject) => {
       db.query(
-        "INSERT INTO tbl_payments (order_id, amount_paid, payment_mode, payment_balance) VALUES (?, ?, ?, ?)",
-        [order_id, amount_paid, payment_mode, payment_balance],
+        "INSERT INTO tbl_payments (order_id, amount_paid, payment_mode, payment_balance, payment_status) VALUES (?, ?, ?, ?, ?)",
+        [order_id, amount_paid, payment_mode, payment_balance, payment_status],
         (err, results) => {
           if (err) return reject(err);
           if (!results) {
             return reject(new Error("No result returned from database"));
           }
           resolve({ id: results.insertId, ...paymentData });
+        }
+      );
+    });
+  },
+
+  updatePaymentStatus: (orderId, newStatus) => {
+    return new Promise((resolve, reject) => {
+      db.query(
+        `UPDATE tbl_payments 
+         SET payment_status = ? 
+         WHERE order_id = ?
+         ORDER BY payment_id DESC LIMIT 1`, 
+        [newStatus, orderId],
+        (err, results) => {
+          if (err) return reject(err);
+          resolve(results);
         }
       );
     });
