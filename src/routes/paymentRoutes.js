@@ -68,6 +68,58 @@ router.get("/", paymentController.getAll);
  */
 router.post("/", paymentController.create);
 
+/**
+ * @openapi
+ * /api/payments/{orderId}:
+ *   put:
+ *     summary: Update payment status for an order
+ *     description: Updates the payment status of an existing payment record
+ *     tags:
+ *       - Payments
+ *     parameters:
+ *       - in: path
+ *         name: orderId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: The order ID associated with the payment
+ *         example: 1
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - newStatus
+ *             properties:
+ *               newStatus:
+ *                 type: string
+ *                 enum: [pending, completed, failed, refunded]
+ *                 example: completed
+ *     responses:
+ *       200:
+ *         description: Payment status successfully updated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: Payment status updated
+ *       400:
+ *         description: Invalid status value
+ *       404:
+ *         description: Payment or order not found
+ *       500:
+ *         description: Server error
+ */
+router.put("/:orderId", paymentController.updatePaymentStatus);
+
 export default router;
 
 /**
