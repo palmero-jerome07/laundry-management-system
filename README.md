@@ -38,7 +38,7 @@ npm run dev
 node ./src/server.js
 ```
 
-Swagger UI: http://localhost:`PORT`/api-docs
+Swagger UI: http://localhost:PORT/api-docs
 
 ---
 
