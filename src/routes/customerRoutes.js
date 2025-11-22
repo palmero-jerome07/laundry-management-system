@@ -24,6 +24,19 @@ import customerController from "../controllers/customerController.js";
  *                   type: array
  *                   items:
  *                     $ref: '#/components/schemas/Customer'
+ *       404:
+ *         description: No customers found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: No customers found
  */
 router.get("/", customerController.getAll);
 
