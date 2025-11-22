@@ -4,6 +4,14 @@ const customerController = {
   getAll: async (req, res) => {
     try {
       const customers = await Customer.getAll();
+
+      if (customers.length === 0) {
+        res.status(404).json({
+          success: true,
+          customers: "No customers yet.",
+        });
+      }
+
       res.status(200).json({
         success: true,
         customers: customers,
