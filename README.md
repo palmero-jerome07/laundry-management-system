@@ -1,11 +1,11 @@
-## 📘 Overview
+##  Overview
 
 The **Laundry Management System API** is a backend service built using **Javascript**, and **MySQL**.  
 This system automates customer records, order tracking, and payment management for laundry shop operations.
 
 ---
 
-## 🚀 Features
+##  Features
 
 - 👤 Manage customer records
 - 🧴 Display available services and rates
@@ -15,28 +15,14 @@ This system automates customer records, order tracking, and payment management f
 - 🔄 Real-time API testing using **Thunder Client/Postman**
 
 ---
+## Main API routes (summary)
+- Customers: /api/customers — list, create, update, get by id/name  
+- Services: /api/services — list, create, get by id/name  
+- Orders: /api/orders — list, create, get by id, status updates, filters  
+- Order Items: /api/order-items — add, update items (recalculates totals)  
+- Payments: /api/payments — list, create (compute balance), update status (/api/payments/:orderId)
 
-## 🛠️ Quick Start
-
-Prerequisites: Node.js (16+), MySQL
-
-Install:
-
-```sh
-npm install
-```
-
-Configure:
-
-- Copy or edit .env_local (or create .env) and set: PORT, DB_HOST, DB_USER, DB_PASSWORD, DB_NAME
-
-Run:
-
-```sh
-npm run dev
-# or
-node ./src/server.js
-```
+Refer to src/routes/* and Swagger UI for full request/response specs.
 
 Swagger UI: http://localhost:PORT/api-docs
 
