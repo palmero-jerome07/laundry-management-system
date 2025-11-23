@@ -192,6 +192,10 @@ router.post("/", orderController.create);
  */
 router.put("/:id/status", orderController.updateStatus);
 
+router.get("/delivery/:delivery_methods", orderController.getOrdersByDeliveryMethod);
+
+router.put("/delivery/:id", orderController.updateDelivery);
+
 export default router;
 
 /**

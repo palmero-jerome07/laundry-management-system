@@ -184,6 +184,60 @@ const orderController = {
       });
     }
   },
+
+  getOrdersByDeliveryMethod : async (req, res) => {
+  try {
+    const delivery_methods  = req.params.delivery_methods;
+
+    const orders = await Order.getByDeliveryMethod(delivery_methods);
+
+    if (!orders || orders.length === 0) {
+      return res.status(404).json({ message: "No orders found for this delivery method" });
+    }
+
+    res.json(orders);
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error });
+  }
+},
+
+updateDelivery: async (req, res) => {
+  try {
+    const  {delivery_methods}  = req.body;
+    const  id  = req.params.id;
+
+    const existingOrder = await Order.getById(id);
+
+    if (!existingOrder) {
+      return res.status(404).json({
+        success: false,
+        message: `Order with ID ${id} not found`,
+      });
+    }
+
+    if (!delivery_methods) {
+      return res.status(400).json({
+        success: false,
+        message: "Field {delivery_methods} is required",
+      });
+    }
+
+    await Order.updateDelivery(id, delivery_methods);
+
+    res.status(200).json({
+      success: true,
+      message: "Delivery method updated successfully",
+      order_id: id,
+      delivery_methods,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: `Error updating delivery method for order ${req.params.id}`,
+      error: error.message,
+    });
+  }
+},
 };
 
 export default orderController;
