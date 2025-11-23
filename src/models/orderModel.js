@@ -101,41 +101,39 @@ const Order = {
   },
 
   getByDeliveryMethod: (deliveryMethod) => {
-  return new Promise((resolve, reject) => {
-    db.query(
-      `SELECT o.*, c.full_name, s.service_name
+    return new Promise((resolve, reject) => {
+      db.query(
+        `SELECT o.*, c.full_name, s.service_name
        FROM tbl_orders o
        JOIN tbl_customers c ON o.customer_id = c.customer_id
        JOIN tbl_services s ON o.service_id = s.service_id
        WHERE o.delivery_methods = ?`,
-      [deliveryMethod],
-      (err, results) => {
-        if (err) reject(err);
-        resolve(results);
-      }
-    );
-  });
-},
-
-updateDelivery: (order_id, delivery_methods) => {
-  return new Promise((resolve, reject) => {
-    db.query(
-      "UPDATE tbl_orders SET delivery_methods = ? WHERE order_id = ?",
-      [delivery_methods, order_id],
-      (err, results) => {
-        if (err) return reject(err);
-
-        if (results.affectedRows === 0) {
-          return resolve(null);
+        [deliveryMethod],
+        (err, results) => {
+          if (err) reject(err);
+          resolve(results);
         }
+      );
+    });
+  },
 
-        resolve({ success: true, order_id, delivery_methods });
-      }
-    );
-  });
-},
+  updateDelivery: (order_id, delivery_methods) => {
+    return new Promise((resolve, reject) => {
+      db.query(
+        "UPDATE tbl_orders SET delivery_methods = ? WHERE order_id = ?",
+        [delivery_methods, order_id],
+        (err, results) => {
+          if (err) return reject(err);
 
+          if (results.affectedRows === 0) {
+            return resolve(null);
+          }
 
+          resolve({ success: true, order_id, delivery_methods });
+        }
+      );
+    });
+  },
 };
 
 export default Order;
