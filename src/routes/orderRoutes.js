@@ -59,6 +59,50 @@ router.get("/status/:status", orderController.getByStatus);
 
 /**
  * @openapi
+ * /api/orders/delivery/{delivery_methods}:
+ *   get:
+ *     summary: Get orders by delivery method
+ *     description: Retrieves all orders filtered by the specified delivery method
+ *     tags:
+ *       - Orders
+ *     parameters:
+ *       - in: path
+ *         name: delivery_methods
+ *         required: true
+ *         schema:
+ *           type: string
+ *           enum: [pickup, delivery, mail]
+ *         description: Delivery method to filter by
+ *         example: delivery
+ *     responses:
+ *       200:
+ *         description: Orders filtered by delivery method
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 orders:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Order'
+ *       400:
+ *         description: Invalid delivery method
+ *       404:
+ *         description: No orders found for this delivery method
+ *       500:
+ *         description: Server error
+ */
+router.get(
+  "/delivery/:delivery_methods",
+  orderController.getOrdersByDeliveryMethod
+);
+
+/**
+ * @openapi
  * /api/orders/name/{name}:
  *   get:
  *     summary: Search orders by customer name
@@ -192,8 +236,56 @@ router.post("/", orderController.create);
  */
 router.put("/:id/status", orderController.updateStatus);
 
-router.get("/delivery/:delivery_methods", orderController.getOrdersByDeliveryMethod);
-
+/**
+ * @openapi
+ * /api/orders/delivery/{id}:
+ *   put:
+ *     summary: Update order delivery method
+ *     description: Updates the delivery method for an existing order
+ *     tags:
+ *       - Orders
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: The order ID
+ *         example: 1
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - delivery_methods
+ *             properties:
+ *               delivery_methods:
+ *                 type: string
+ *                 enum: [pickup, delivery, mail]
+ *                 example: delivery
+ *     responses:
+ *       200:
+ *         description: Delivery method successfully updated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: Delivery method updated
+ *       400:
+ *         description: Invalid delivery method
+ *       404:
+ *         description: Order not found
+ *       500:
+ *         description: Server error
+ */
 router.put("/delivery/:id", orderController.updateDelivery);
 
 export default router;
