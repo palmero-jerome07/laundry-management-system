@@ -9,7 +9,7 @@ import orderItemController from "../controllers/orderItemController.js";
  *   post:
  *     summary: Add items to an order
  *     tags:
- *       - OrderItems
+ *       - Order Items
  *     requestBody:
  *       required: true
  *       content:
@@ -57,7 +57,7 @@ router.post("/", orderItemController.addItems);
  *   put:
  *     summary: Update an existing order item
  *     tags:
- *       - OrderItems
+ *       - Order Items
  *     parameters:
  *       - in: path
  *         name: id
@@ -99,7 +99,7 @@ export default router;
  * @openapi
  * components:
  *   schemas:
- *     OrderItem:
+ *     Order Item:
  *       type: object
  *       properties:
  *         item_id:

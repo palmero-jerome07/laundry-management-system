@@ -34,7 +34,7 @@ app.use("/api/payments", paymentRoutes);
 // Swagger UI
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-// Connections
+// Connections (make sure na connected muna yung db natin before server starts)
 dbConnect()
   .then(() => {
     app.listen(PORT, () => {

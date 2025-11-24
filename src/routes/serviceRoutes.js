@@ -108,6 +108,8 @@ router.get("/:id", serviceController.getById);
  *                 type: string
  *               price_per_kilo:
  *                 type: number
+ *               description:
+ *                 type: string
  *     responses:
  *       201:
  *         description: Service created

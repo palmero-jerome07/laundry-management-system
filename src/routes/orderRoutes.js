@@ -71,9 +71,9 @@ router.get("/status/:status", orderController.getByStatus);
  *         required: true
  *         schema:
  *           type: string
- *           enum: [pickup, delivery, mail]
+ *           enum: [In-Store Pickup, Drop-off]
  *         description: Delivery method to filter by
- *         example: delivery
+ *         example: In-Store Pickup
  *     responses:
  *       200:
  *         description: Orders filtered by delivery method
@@ -180,8 +180,6 @@ router.get("/:id", orderController.getById);
  *                 type: integer
  *               service_id:
  *                 type: integer
- *               notes:
- *                 type: string
  *     responses:
  *       201:
  *         description: Order created
