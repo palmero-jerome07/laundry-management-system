@@ -24,7 +24,7 @@ This system automates customer records, order tracking, and payment management f
 
 Refer to src/routes/* and Swagger UI for full request/response specs.
 
-Swagger UI: http://localhost:PORT/api-docs
+Swagger UI: [http://localhost:PORT/api-docs](http://localhost:3000/api-docs/)
 
 ---
 
