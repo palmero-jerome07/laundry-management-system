@@ -47,11 +47,9 @@ router.get("/", paymentController.getAll);
  *             properties:
  *               order_id:
  *                 type: integer
- *               amount:
+ *               amount_paid:
  *                 type: number
- *               method:
- *                 type: string
- *               notes:
+ *               payment_mode:
  *                 type: string
  *     responses:
  *       201:
@@ -119,6 +117,62 @@ router.post("/", paymentController.create);
  *         description: Server error
  */
 router.put("/:orderId", paymentController.updatePaymentStatus);
+
+/**
+ * @openapi
+ * /api/payments/complete/{orderId}:
+ *   put:
+ *     summary: Apply/complete payment for an order
+ *     description: Add a payment towards an order balance; creates a payment record and updates order status when fully paid.
+ *     tags:
+ *       - Payments
+ *     parameters:
+ *       - in: path
+ *         name: orderId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: The order ID to apply payment for
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - amount_paid
+ *               - payment_mode
+ *             properties:
+ *               amount_paid:
+ *                 type: number
+ *                 example: 50.00
+ *               payment_mode:
+ *                 type: string
+ *                 example: card
+ *     responses:
+ *       200:
+ *         description: Payment applied successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 message:
+ *                   type: string
+ *                 payment:
+ *                   $ref: '#/components/schemas/Payment'
+ *                 balance_remaining:
+ *                   type: number
+ *       400:
+ *         description: Missing or invalid fields
+ *       404:
+ *         description: Order not found
+ *       500:
+ *         description: Server error
+ */
+router.put("/complete/:orderId", paymentController.completePayment);
 
 export default router;
 
