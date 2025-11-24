@@ -138,4 +138,6 @@ export default router;
  *           type: string
  *         price_per_kilo:
  *           type: number
+ *         description:
+ *           type: string
  */

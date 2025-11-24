@@ -223,4 +223,7 @@ export default router;
  *           format: email
  *         address:
  *           type: string
+ *         created_at:
+ *           type: string
+ *           format: date-time
  */

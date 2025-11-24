@@ -133,10 +133,15 @@ export default router;
  *           type: integer
  *         order_id:
  *           type: integer
- *         amount:
+ *         payment_mode:
+ *           type: string
+ *         amount_paid:
  *           type: number
- *         method:
+ *         payment_balance:
+ *           type: number
+ *         payment_status:
  *           type: string
- *         notes:
+ *         payment_date:
  *           type: string
+ *           format: date-time
  */

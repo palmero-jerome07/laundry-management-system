@@ -241,7 +241,7 @@ router.put("/:id/status", orderController.updateStatus);
  * /api/orders/delivery/{id}:
  *   put:
  *     summary: Update order delivery method
- *     description: Updates the delivery method for an existing order
+ *     description: Updates the delivery method for an existing order, use ["In-store Pickup or Drop-off"]
  *     tags:
  *       - Orders
  *     parameters:
@@ -263,8 +263,8 @@ router.put("/:id/status", orderController.updateStatus);
  *             properties:
  *               delivery_methods:
  *                 type: string
- *                 enum: [pickup, delivery, mail]
- *                 example: delivery
+ *                 enum: ["In-store Pickup", "Drop-off"]
+ *                 example: "In-store Pickup"
  *     responses:
  *       200:
  *         description: Delivery method successfully updated
@@ -309,4 +309,12 @@ export default router;
  *           type: number
  *         total_amount:
  *           type: number
+ *         delivery_methods:
+ *           type: string
+ *           enum:
+ *             - In-store Pickup
+ *             - Drop-off
+ *         created_at:
+ *           type: string
+ *           format: date-time
  */
