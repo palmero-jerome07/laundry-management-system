@@ -7,12 +7,12 @@ This system automates customer records, order tracking, and payment management f
 
 ##  Features
 
-- 👤 Manage customer records
-- 🧴 Display available services and rates
-- 🧺 Create and track laundry orders
-- 💰 Handle payments and status updates
-- 📊 Retrieve complete order summaries
-- 🔄 Real-time API testing using **Thunder Client/Postman**
+-  Manage customer records
+-  Display available services and rates
+-  Create and track laundry orders
+-  Handle payments and status updates
+-  Retrieve complete order summaries
+-  Real-time API testing using **Thunder Client/Postman**
 
 ---
 ## Main API routes (summary)
